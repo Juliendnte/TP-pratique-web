@@ -38,15 +38,21 @@ func main() {
 		Check bool
 	}
 
+	type person struct {
+		Nom string
+		Prenom string
+		Birthday string
+		Sexe string
+	}
+
 	http.HandleFunc("/change", func(w http.ResponseWriter, r *http.Request) {
 		vue++
-		var state bool
+		var page even
 		if vue%2 == 0 {
-			state = true
+			page = even{vue, true}
 		} else {
-			state = false
+			page = even{vue, false}
 		}
-		page := even{vue, state}
 		temp.ExecuteTemplate(w, "change", page)
 	})
 
@@ -55,6 +61,13 @@ func main() {
 		page := PageVariables{"Mentor'ac", "Informatique", 5, len(lstelv)}
 		d := data{page, lstelv}
 		temp.ExecuteTemplate(w, "promo", d)
+	})
+
+	http.HandleFunc("/user/init", func(w http.ResponseWriter, r *http.Request) {
+
+	})
+	http.HandleFunc("/user/display", func(w http.ResponseWriter, r *http.Request) {
+
 	})
 	rootDoc, _ := os.Getwd()
 	fileserver := http.FileServer(http.Dir(rootDoc + "/asset"))
