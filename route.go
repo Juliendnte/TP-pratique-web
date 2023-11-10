@@ -5,9 +5,19 @@ import (
 	"html/template"
 	"net/http"
 	"os"
+	"regexp"
 )
 
 var vue int = 0
+
+type person struct {
+	Nom      string
+	Prenom   string
+	Birthday string
+	Sexe     string
+}
+
+var dataForm person = person{}
 
 func main() {
 	temp, err := template.ParseGlob("./temp/*.html")
@@ -38,13 +48,6 @@ func main() {
 		Check bool
 	}
 
-	type person struct {
-		Nom string
-		Prenom string
-		Birthday string
-		Sexe string
-	}
-
 	http.HandleFunc("/change", func(w http.ResponseWriter, r *http.Request) {
 		vue++
 		var page even
@@ -64,9 +67,30 @@ func main() {
 	})
 
 	http.HandleFunc("/user/init", func(w http.ResponseWriter, r *http.Request) {
-
+		temp.ExecuteTemplate(w, "init", nil)
 	})
+
+	http.HandleFunc("/user/treatment", func(w http.ResponseWriter, r *http.Request) {
+		dataForm = person{
+			r.FormValue("Name"),
+			r.FormValue("Firstname"),
+			r.FormValue("Date"),
+			r.FormValue("Sexe")}
+		checkValue,_:= regexp.MatchString("^[a-zA-Z-]{1,64}$",dataForm.Nom)
+		if !checkValue{
+			dataForm.Nom="Invalide"
+		}
+		checkValue,_= regexp.MatchString("^[a-zA-Z-]{1,64}$",dataForm.Prenom)
+		if !checkValue{
+			dataForm.Prenom="Invalide"
+		}
+		fmt.Println(dataForm)
+		http.Redirect(w, r, "/user/display", http.StatusMovedPermanently)
+	})
+
 	http.HandleFunc("/user/display", func(w http.ResponseWriter, r *http.Request) {
+
+		temp.ExecuteTemplate(w, "display", dataForm)
 
 	})
 	rootDoc, _ := os.Getwd()

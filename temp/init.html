@@ -1,0 +1,30 @@
+{{define "init"}}
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Challenge 3</title>
+        <link rel="stylesheet"  href="/static/css/init.css"/>
+    </head>
+    <body>
+        <div class="container">
+            <p><strong>Renseigner vos données</strong></p>
+          <form action="/user/treatment" method="POST">
+            <label for="Name">Nom</label>
+            <input type="text" name="Name" id="Name">
+            <label for="Firstname">Prenom</label>
+            <input type="text" name="Firstname" id="Firstname">
+            <label for="Date">Date d'anniversaire</label>
+            <input type="date" name="Date" id="Date">
+            <label for="Sexe">Sexe</label>
+            <select id="Sexe" name="Sexe">
+                    <option value="Homme" > Homme </option>
+                    <option value="Femme" > Femme </option>
+            </select>
+            <button type="submit">Valider</button>
+          </form>
+        </div>
+    </body>
+</html>
+{{end}}
