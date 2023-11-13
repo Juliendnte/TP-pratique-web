@@ -35,6 +35,10 @@ input{
     margin-bottom: 5px;
 }
 
+select{
+    border-radius: 10px;
+}
+
 label{
     margin-bottom: 5px;
 }
